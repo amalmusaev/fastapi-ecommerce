@@ -1,15 +1,14 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
-
-# Строка подключения для SQLite
-DATABASE_URL = "sqlite:///ecommerce.db"
+from app.config import DATABASE_URL
 
 # Создаём Engine
-engine = create_engine(DATABASE_URL, echo=True)
+async_engine = create_async_engine(DATABASE_URL, echo=True)
 
 # Настраиваем фабрику сеансов
-SessionLocal = sessionmaker(bind=engine)
+async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False, class_=AsyncSession)
+
 
 # Определяем базовый класс для моделей
 class Base(DeclarativeBase):

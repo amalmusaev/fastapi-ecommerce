@@ -6,8 +6,15 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "bcrypt>=5.0.0",
     "fastapi>=0.129.0",
-    "pydantic>=2.12.5",
+    "greenlet>=3.3.1",
+    "passlib>=1.7.4",
+    "pydantic[email]>=2.12.5",
+    "pyjwt>=2.11.0",
+    "python-dotenv>=1.2.1",
+    "python-multipart>=0.0.22",
     "sqlalchemy>=2.0.46",
     "uvicorn>=0.40.0",
 ]

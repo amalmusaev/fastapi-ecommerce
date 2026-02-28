@@ -1,8 +1,8 @@
-"""Create categories and products tables
+"""Initial migration for PostgreSQL
 
-Revision ID: 286053de602f
+Revision ID: b1dfa22aaad0
 Revises: 
-Create Date: 2026-02-22 14:48:16.841646
+Create Date: 2026-02-26 06:52:15.105215
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '286053de602f'
+revision: str = 'b1dfa22aaad0'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
