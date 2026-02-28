@@ -38,8 +38,10 @@ async def create_user(user: UserCreate, db: AsyncSession = Depends(get_async_db)
 
 
 @router.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm = Depends(),
-                db: AsyncSession = Depends(get_async_db)):
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: AsyncSession = Depends(get_async_db)
+):
     """
     Аутентифицирует пользователя и возвращает JWT с email, role и id.
     """
