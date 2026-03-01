@@ -16,7 +16,6 @@ from app.auth import (
     get_current_user,
 )
 
-
 router = APIRouter(prefix="/users", tags=["users"])
 
 
@@ -29,8 +28,10 @@ async def create_user(user: UserCreate, db: AsyncSession = Depends(get_async_db)
     # Проверка уникальности email
     result = await db.scalars(select(UserModel).where(UserModel.email == user.email))
     if result.first():
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                            detail="Email already registered")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already registered"
+        )
 
     # Создание объекта пользователя с хешированным паролем
     db_user = UserModel(
@@ -54,7 +55,8 @@ async def login(
     Аутентифицирует пользователя и возвращает access_token и refresh_token.
     """
     result = await db.scalars(
-        select(UserModel).where(UserModel.email == form_data.username, UserModel.is_active == True))
+        select(UserModel).where(UserModel.email == form_data.username, UserModel.is_active == True)
+    )
     user = result.first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
@@ -65,7 +67,6 @@ async def login(
     access_token = create_access_token(data={"sub": user.email, "role": user.role, "id": user.id})
     refresh_token = create_refresh_token(data={"sub": user.email, "role": user.role, "id": user.id})
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
-
 
 
 @router.post("/access-token/refresh")

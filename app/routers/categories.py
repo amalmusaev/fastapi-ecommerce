@@ -8,8 +8,6 @@ from app.db_depends import get_async_db
 from app.models.users import User as UserModel
 from app.auth import get_current_seller
 
-
-# Создаём маршрутизатор с префиксом и тегом
 router = APIRouter(
     prefix="/categories",
     tags=["categories"],
@@ -37,8 +35,10 @@ async def create_category(
     """
     # Проверка существования parent_id, если указан
     if category.parent_id is not None:
-        stmt = select(CategoryModel).where(CategoryModel.id == category.parent_id,
-                                           CategoryModel.is_active == True)
+        stmt = select(CategoryModel).where(
+            CategoryModel.id == category.parent_id,
+            CategoryModel.is_active == True
+        )
         result = await db.scalars(stmt)
         parent = result.first()
         if parent is None:
@@ -57,13 +57,15 @@ async def update_category(
     category: CategoryCreate,
     db: AsyncSession = Depends(get_async_db),
     current_user: UserModel = Depends(get_current_seller)
-    ):
+):
     """
     Обновляет категорию по её ID.
     """
     # Проверяем существование категории
-    stmt = select(CategoryModel).where(CategoryModel.id == category_id,
-                                       CategoryModel.is_active == True)
+    stmt = select(CategoryModel).where(
+        CategoryModel.id == category_id,
+        CategoryModel.is_active == True
+    )
     result = await db.scalars(stmt)
     db_category = result.first()
     if not db_category:
@@ -71,8 +73,10 @@ async def update_category(
 
     # Проверяем parent_id, если указан
     if category.parent_id is not None:
-        parent_stmt = select(CategoryModel).where(CategoryModel.id == category.parent_id,
-                                                  CategoryModel.is_active == True)
+        parent_stmt = select(CategoryModel).where(
+            CategoryModel.id == category.parent_id,
+            CategoryModel.is_active == True
+        )
         parent_result = await db.scalars(parent_stmt)
         parent = parent_result.first()
         if not parent:
@@ -96,12 +100,14 @@ async def delete_category(
     category_id: int,
     db: AsyncSession = Depends(get_async_db),
     current_user: UserModel = Depends(get_current_seller)
-    ):
+):
     """
     Выполняет мягкое удаление категории по её ID, устанавливая is_active = False.
     """
-    stmt = select(CategoryModel).where(CategoryModel.id == category_id,
-                                       CategoryModel.is_active == True)
+    stmt = select(CategoryModel).where(
+        CategoryModel.id == category_id,
+        CategoryModel.is_active == True
+    )
     result = await db.scalars(stmt)
     db_category = result.first()
     if not db_category:
